@@ -5,9 +5,12 @@
 package it.polito.tdp.poweroutages;
 
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.ResourceBundle;
 import it.polito.tdp.poweroutages.model.Model;
 import it.polito.tdp.poweroutages.model.Nerc;
+import it.polito.tdp.poweroutages.model.PowerOutage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -39,6 +42,21 @@ public class FXMLController {
     @FXML
     void doRun(ActionEvent event) {
     	txtResult.clear();
+    	
+    	Integer nercId = cmbNerc.getValue().getId();
+    	Integer anniMax = Integer.parseInt(txtYears.getText());
+    	Integer oreMax = Integer.parseInt(txtHours.getText());
+    	
+    	List<PowerOutage> lista = this.model.analisi(nercId, anniMax, oreMax);
+    	
+    	txtResult.appendText("Tot people affected: "+this.model.contaPersoneCoinvolte(lista)+"\n");
+    	txtResult.appendText("Tot hours of outage: "+this.model.contaOre(lista)+"\n");
+    	for(PowerOutage p : lista ) {
+    		int anno = p.getDateEventBegan().getYear();
+    		double ore = p.getDateEventBegan().until(p.getDateEventFinished(), ChronoUnit.HOURS);
+    		int personeCoinvolte = p.getCustomersAffected();
+    		txtResult.appendText(anno+" "+p.getDateEventBegan()+" "+p.getDateEventFinished()+" "+ore+" "+personeCoinvolte+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -54,5 +72,7 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	this.cmbNerc.getItems().addAll(this.model.getNercList());
     }
 }
