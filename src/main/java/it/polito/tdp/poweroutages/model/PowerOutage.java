@@ -26,7 +26,7 @@ public class PowerOutage {
 		this.customersAffected = customersAffected;
 		this.dateEventBegan = dateEventBegan;
 		this.dateEventFinished = dateEventFinished;
-	}
+	} 
 
 	public int getId() {
 		return id;

@@ -9,7 +9,7 @@ public class TestModel {
 		Model model = new Model();
 		//System.out.println(model.getNercList());
 		
-		List<PowerOutage> lista = model.analisi(3, 4, 200);
+		List<PowerOutage> lista = model.analisi(6, 4, 200);
 		for(PowerOutage po : lista) {
 			System.out.println(po+"\n");
 		}
